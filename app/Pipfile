@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==3.2.*"
+django-environ = "*"
+gunicorn = "*"
+sentry-sdk = { version = "*", extras = ["django"] }
+
+[dev-packages]
+django-debug-toolbar = "*"
+model-bakery = "*"
+
+[requires]
+python_version = "3.10"
