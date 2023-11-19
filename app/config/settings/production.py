@@ -41,6 +41,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool("DJANGO_SECURE_CONTENT_TYPE_NOSNIFF", def
 
 # EMAIL
 # ------------------------------------------------------------------------------
+EMAIL_BACKEND = env("DJANGO_EMAIL_BACKEND")
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')

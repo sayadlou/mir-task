@@ -33,7 +33,7 @@ def contact_request_post_save(sender, instance: ContactRequest, created, **kwarg
     :return:
     """
     if created:
-        email_message = (f"Replay-to{instance.email}\r\n"
+        email_message = (f"Replay-to : {instance.email}\r\n"
                          f"name : {instance.name} \r\n"
                          f"content{instance.content}")
         email_subject = f"Replay-to{instance.email}"
