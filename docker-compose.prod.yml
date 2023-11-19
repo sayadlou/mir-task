@@ -1,0 +1,22 @@
+services:
+  app:
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f  http://0.0.0.0:8003/healthcheck/ || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    build:
+      context: ./app
+      dockerfile: ./prod.Dockerfile
+    command: /bin/sh /app/django-entrypoint.prod.sh
+    container_name: "app"
+    volumes:
+      - ./app/staticfiles:/app/staticfiles
+    ports:
+      - 8003:8003
+    env_file:
+      - app/.env.prod
+
+
