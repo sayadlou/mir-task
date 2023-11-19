@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h1>Title:{{ post.title }}</h1>
+  <p>{{ post.content }}</p>
+  <h5>Auther : {{ post.owner.first_name }} {{ post.owner.last_name }}</h5>
+  <strong class="post-date">{{ post.publication_datetime }}</strong>
+{% endblock %}
