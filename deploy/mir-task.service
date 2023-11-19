@@ -1,0 +1,16 @@
+[Unit]
+Description=%i service with docker compose
+PartOf=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStartPre=/usr/bin/docker compose --file /home/saeid/mir-task/docker-compose.prod.yml down --remove-orphans
+ExecStart=/usr/bin/docker compose --file /home/saeid/mir-task/docker-compose.prod.yml up --build -d
+ExecStop=/usr/bin/docker compose --file /home/saeid/mir-task/docker-compose.prod.yml down --remove-orphans
+WorkingDirectory=/etc/docker/compose/%i
+StandardOutput=journal
+StandardError=journal
+[Install]
+WantedBy=multi-user.target
