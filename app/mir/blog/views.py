@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.views.generic import ListView, DetailView
 
 from .models import Post
@@ -16,5 +17,11 @@ class ArticleListView(ListView):
 
 
 class ArticleDetailView(DetailView):
-
     model = Post
+
+    def get_object(self, queryset=None):
+        # raise 404 error in case of offline post request
+        obj: Post = super().get_object(queryset)
+        if obj.is_post_offline():
+            raise Http404()
+        return obj

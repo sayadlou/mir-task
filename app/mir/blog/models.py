@@ -46,3 +46,7 @@ class Post(models.Model):
         # save method override for make slug from title of post
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    def is_post_offline(self):
+        # check post to be offline
+        return self.status == self.PostStatus.OFFLINE
