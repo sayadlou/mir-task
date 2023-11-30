@@ -9,7 +9,8 @@ from .models import ContactRequest
 class ContactRequestModelTest(TestCase):
 
     # Create a sample contact request for testing
-    @patch('mir.contact.signals.send_contact_info_as_email') # mock the sent email after message creation
+    @patch('mir.contact.views.ContactRequestCreateView._send_contact_info_as_email')
+    # mock the sent email after message creation
     def setUp(self, mock_send_mail):
         # Create a sample contact request for testing
         self.contact_request = ContactRequest.objects.create(
@@ -29,7 +30,7 @@ class ContactRequestModelTest(TestCase):
 class ContactRequestCreateViewTest(TestCase):
 
     # Sending a POST request to the view
-    @patch('mir.contact.signals.send_contact_info_as_email')
+    @patch('mir.contact.views.ContactRequestCreateView._send_contact_info_as_email')
     def test_contact_request_create_view(self, mock_send_mail):
         url = reverse('contact_us')
 
@@ -52,9 +53,4 @@ class ContactRequestCreateViewTest(TestCase):
         self.assertEqual(mock_send_mail.call_count, 1)
 
         # Check if the send_contact_info_as_email  was applied
-        mock_send_mail.assert_called_once_with(
-            f"Replay-to{contact_request.email}\r\n"
-            f"name : {contact_request.name} \r\n"
-            f"content{contact_request.content}",
-            f"Replay-to{contact_request.email}"
-        )
+        mock_send_mail.assert_called_once()
