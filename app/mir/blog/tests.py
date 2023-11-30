@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils.text import slugify
 from model_bakery import baker
 
 from .models import Post
@@ -21,6 +22,7 @@ class PostModelTest(TestCase):
         self.post_online_1 = baker.make(Post, owner=self.user, status=Post.PostStatus.ONLINE)
         self.post_online_2 = Post.objects.create(
             title='Test Post',
+            slug='test-post',
             content='This is a test post content.',
             owner=self.user,
             status=Post.PostStatus.ONLINE,
@@ -49,15 +51,6 @@ class PostModelTest(TestCase):
         expected_url = reverse('article', kwargs={'slug': self.post_online_2.slug, 'id': self.post_online_2.id})
         self.assertEqual(url, expected_url)
 
-    def test_save_method(self):
-        post = Post.objects.create(
-            title='Another Test Post',
-            content='This is another test post content.',
-            owner=self.user,
-            status=Post.PostStatus.OFFLINE,
-        )
-        self.assertEqual(post.slug, 'another-test-post')
-
     def test_is_post_offline(self):
         self.assertFalse(self.post_online_1.is_post_offline())
         self.assertTrue(self.post_offline_1.is_post_offline())
@@ -72,12 +65,14 @@ class ArticleListViewTest(TestCase):
         # Create online and offline posts for testing
         self.online_post = Post.objects.create(
             title='Online Test Post',
+            slug=slugify('Online Test Post'),
             content='This is an online test post content.',
             owner=self.user,
             status=Post.PostStatus.ONLINE,
         )
         self.offline_post = Post.objects.create(
             title='Offline Test Post',
+            slug=slugify('Offline Test Post'),
             content='This is an offline test post content.',
             owner=self.user,
             status=Post.PostStatus.OFFLINE,
@@ -96,6 +91,7 @@ class ArticleListViewTest(TestCase):
         for i in range(8):
             Post.objects.create(
                 title=f'Post {i}',
+                slug=slugify(f'Post {i}'),
                 content=f'This is test post content {i}.',
                 owner=self.user,
                 status=Post.PostStatus.ONLINE,
@@ -117,6 +113,7 @@ class ArticleDetailViewTest(TestCase):
         # Create a sample post for testing
         self.post = Post.objects.create(
             title='Test Post',
+            slug=slugify('Test Post'),
             content='This is a test post content.',
             owner=self.user,
             status=Post.PostStatus.ONLINE,

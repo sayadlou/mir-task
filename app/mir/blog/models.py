@@ -21,7 +21,7 @@ class Post(models.Model):
         OFFLINE = "offline", "Offline"
 
     title = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50, blank=True)
+    slug = models.SlugField(max_length=50)
     content = models.TextField(max_length=200)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     publication_datetime = models.DateTimeField(default=timezone.now)
@@ -42,10 +42,10 @@ class Post(models.Model):
         # get address of post in url
         return reverse('article', kwargs={'slug': self.slug, 'id': self.id})
 
-    def save(self, *args, **kwargs):
-        # save method override for make slug from title of post
-        self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     # save method override for make slug from title of post
+    #     self.slug = slugify(self.title)
+    #     super().save(*args, **kwargs)
 
     def is_post_offline(self):
         # check post to be offline
