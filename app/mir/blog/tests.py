@@ -18,33 +18,35 @@ class PostModelTest(TestCase):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
 
         # Create a sample posts
-        self.post1 = baker.make(Post, owner=self.user, status=Post.PostStatus.ONLINE)
-        self.post2 = Post.objects.create(
+        self.post_online_1 = baker.make(Post, owner=self.user, status=Post.PostStatus.ONLINE)
+        self.post_online_2 = Post.objects.create(
             title='Test Post',
             content='This is a test post content.',
             owner=self.user,
             status=Post.PostStatus.ONLINE,
         )
+        self.post_offline_1 = baker.make(Post, owner=self.user, status=Post.PostStatus.OFFLINE)
+        self.post_offline_2 = baker.make(Post, owner=self.user, status=Post.PostStatus.OFFLINE)
 
     def test_post_creation(self):
         # test the creation of a post
-        self.assertEqual(self.post2.title, 'Test Post')
-        self.assertEqual(self.post2.content, 'This is a test post content.')
-        self.assertEqual(self.post2.owner, self.user)
-        self.assertEqual(self.post2.status, Post.PostStatus.ONLINE)
-        self.assertIsNotNone(self.post2.publication_datetime)
-        self.assertEqual(str(self.post2), 'Test Post')
-        self.assertEqual(self.post2.slug, 'test-post')
+        self.assertEqual(self.post_online_2.title, 'Test Post')
+        self.assertEqual(self.post_online_2.content, 'This is a test post content.')
+        self.assertEqual(self.post_online_2.owner, self.user)
+        self.assertEqual(self.post_online_2.status, Post.PostStatus.ONLINE)
+        self.assertIsNotNone(self.post_online_2.publication_datetime)
+        self.assertEqual(str(self.post_online_2), 'Test Post')
+        self.assertEqual(self.post_online_2.slug, 'test-post')
 
     def test_get_online_post(self):
         # test for get_online_posts class method
         online_posts = Post.get_online_posts()
-        self.assertIn(self.post2, online_posts)
+        self.assertIn(self.post_online_2, online_posts)
         self.assertEqual(len(online_posts), 2)
 
     def test_get_absolute_url(self):
-        url = self.post2.get_absolute_url()
-        expected_url = reverse('article', kwargs={'slug': self.post2.slug, 'id': self.post2.id})
+        url = self.post_online_2.get_absolute_url()
+        expected_url = reverse('article', kwargs={'slug': self.post_online_2.slug, 'id': self.post_online_2.id})
         self.assertEqual(url, expected_url)
 
     def test_save_method(self):
@@ -55,6 +57,10 @@ class PostModelTest(TestCase):
             status=Post.PostStatus.OFFLINE,
         )
         self.assertEqual(post.slug, 'another-test-post')
+
+    def test_is_post_offline(self):
+        self.assertFalse(self.post_online_1.is_post_offline())
+        self.assertTrue(self.post_offline_1.is_post_offline())
 
 
 class ArticleListViewTest(TestCase):
