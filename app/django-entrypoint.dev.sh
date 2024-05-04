@@ -11,4 +11,4 @@ echo "collecting static files"
 python manage.py collectstatic --noinput
 
 # Run configuration
-python manage.py runserver 0.0.0.0:8003
+python manage.py runserver 0.0.0.0:8000

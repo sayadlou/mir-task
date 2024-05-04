@@ -315,3 +315,4 @@ app/.env.prod
 .env.prod
 
 app/db.sqlite3
+/nginx/env.prod.proxy-companion

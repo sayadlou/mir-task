@@ -6,13 +6,11 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Create a non-root user and group for running the application
-RUN addgroup -S app && adduser -S app -G app
 
 # Create the application directory and set it as the working directory
 WORKDIR /app
 
-# Change ownership of the application directory to the non-root user
-RUN chown -R app:app /app
+
 
 # Install system dependencies
 RUN apk --no-cache add curl
@@ -34,8 +32,6 @@ COPY django-entrypoint.prod.sh /app/
 RUN chmod +x /app/django-entrypoint.prod.sh
 
 
-# Switch to the "app" user
-USER app
 
 # Copy the entire project into the container
 COPY . .
@@ -44,5 +40,5 @@ COPY . .
 
 
 # Expose any necessary ports
-EXPOSE 8003
+EXPOSE 8000
 
