@@ -35,7 +35,7 @@ services:
       - vhost:/etc/nginx/vhost.d
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
-      vpn_panel:
+      app:
         condition: service_healthy
 
 
@@ -51,7 +51,7 @@ services:
       - vhost:/etc/nginx/vhost.d
       - acme:/etc/acme.sh
     depends_on:
-      vpn_panel:
+      app:
         condition: service_healthy
 
 volumes:
